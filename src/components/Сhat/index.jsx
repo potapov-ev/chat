@@ -81,7 +81,7 @@ const Chat = () => {
   };
 
   const sendMessage = message => {
-    if (message.text === "Ярик") {
+    if (message.text?.toUpperCase() === "ЯРИК") {
       pashalka.current.style.display = "block";
       video.current.play();
       setTimeout(() => pashalka.current.style.display = "none", 4000);
