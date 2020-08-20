@@ -1,0 +1,22 @@
+[
+  {
+    "name": "Multy",
+    "login": "multik0137",
+    "pass": "$2b$10$51SkCrZ8gFRn/zIMQwJnbOMFw8Y2CrpPIs4wxckGFJH5f3ui5IgwW"
+  },
+  {
+    "name": "Multy",
+    "login": "123",
+    "pass": "$2b$10$y28tZtI/cw681wSnyZ7FV.k8wWZsnjoxfVMiRQ54t2PkHmCpVP2Oq"
+  },
+  {
+    "name": "google",
+    "login": "google",
+    "pass": "$2b$10$WL4RFcVqDdD65JrrojMxHOOEzZX15ieBbf0JhJmBDkQQOEHyiI06W"
+  },
+  {
+    "name": "google1",
+    "login": "google1",
+    "pass": "$2b$10$f15FBkcmqpVLj0e.ZhKoiOBd8WrAzgjCyaZ9n/qrvAPKZjLsuSa22"
+  }
+]

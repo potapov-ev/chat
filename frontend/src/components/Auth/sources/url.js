@@ -1,0 +1,1 @@
+export const DEV_STAND = "http://localhost:8989";
