@@ -149,9 +149,6 @@ const Chat = () => {
           </>
           :
           <Loader />
-        /* 
-        todo убрать и добавить лодер, если нужно
-        */
       }
       <Pashalka ref={pashalka} >
         <video ref={video}>

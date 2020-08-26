@@ -2,16 +2,6 @@ export const formatNumber = number => (
   number < 10 ? "0" + number : number
 );
 
-export const generateUID = () => {
-  let text = '';
-  const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  for (let i = 0; i < 15; i++) {
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
-  }
-  localStorage.setItem('uid', text);
-  return text;
-};
-
 const nativeMax = Math.max;
 const nativeMin = Math.min;
 export function debounce(func, wait, options) {

@@ -12,11 +12,13 @@ import {
 const Auth = ({ history }) => {
   console.log("Auth");
 
-  const { setUserName } = useContext(UserContext);
+  const { setUserName, setUID } = useContext(UserContext);
   const [isLogin, setIsLogin] = useState(true);
 
-  const toChat = (name = "Morty") => {
-    setUserName(name);
+  const toChat = (user = {}) => {
+    setUserName(user.name);
+    setUID(user.id)
+
     history.push("/chat");
   };
 

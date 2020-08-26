@@ -1,24 +1,30 @@
 import React, { useState, useEffect } from 'react'
-import { generateUID } from 'utils'
 
 export const UserContext = React.createContext({});
 
 const UserProvider = UserContext.Provider;
 /* todo Добавить уникальный ключ-префикс ко всем локалстораджам */
 const UserContextProvider = ({ children }) => {
-  const [uid] = useState(localStorage.getItem('uid') ? localStorage.getItem('uid') : generateUID());
-  const [userName, setUserName] = useState(localStorage.getItem('userName') ? localStorage.getItem('userName') : "")
+  const [uid, setUID] = useState(localStorage.getItem('uid'));
+  const [userName, setUserName] = useState(localStorage.getItem('userName') || "")
 
   useEffect(() => {
     if (userName) {
       localStorage.setItem('userName', userName);
     }
-  }, [userName])
+  }, [userName]);
+
+  useEffect(() => {
+    if (uid) {
+      localStorage.setItem('uid', uid);
+    }
+  }, [uid]);
 
   return (
     <UserProvider
       value={{
         uid,
+        setUID,
         userName,
         setUserName
       }}

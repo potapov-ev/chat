@@ -3,7 +3,7 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const { readFileSync, writeFileSync } = require('fs');
 
-router.post("/", (req, res) => {
+router.post("/regis", (req, res) => {
   res.set('Access-Control-Allow-Origin', '*');
   res.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
   res.set('Access-Control-Allow-Headers', 'Content-Type');
@@ -25,6 +25,7 @@ router.post("/", (req, res) => {
     const salt = bcrypt.genSaltSync(saltRounds);
 
     const newUser = {
+      id: req.body.id,
       name: req.body.name,
       login: req.body.login,
       pass: bcrypt.hashSync(req.body.password, salt)
@@ -32,8 +33,13 @@ router.post("/", (req, res) => {
 
     users.push(newUser);
     writeFileSync("Auth/users.json", JSON.stringify(users), "utf-8")
-    res.status(200);
-    res.end();
+    
+    req.logIn(newUser, function (err) {
+      if (err) {
+        return res.status(400).json({ errors: err });
+      }
+      return res.status(200).json({ name: newUser.name, id: newUser.id });
+    });
   }
 });
 
