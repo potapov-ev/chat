@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import Paper from '@material-ui/core/Paper';
 
 const PageContainer = styled.div`
@@ -7,6 +7,17 @@ const PageContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
+`;
+
+const switchCard = keyframes`
+  0% {
+    color: white;
+  }
+  100% { 
+    transform: translateY(400px);
+    opacity: 0;
+  }
 `;
 
 // Стили для карточек регистрации и авторизации
@@ -15,7 +26,9 @@ const StyledPaper = styled(Paper)`
   display: flex;
   flex-direction: column;
   align-items: center;
+  animation: ${switchCard} 0.3s;
 `;
+
 const Title = styled.h3`
   padding: 24px 12px;
 `;
@@ -58,5 +71,5 @@ export {
   PageSwitch,
   Link,
   ButtonWrapper,
-  ErrorMessage
+  ErrorMessage,
 };
