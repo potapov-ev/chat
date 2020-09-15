@@ -75,7 +75,7 @@ const GifBox = ({ toggleGif, sendMessage }) => {
       params: {
         api_key: 'ln9tgm0RCZiGOcD5D6Gm3Wr8JYXLq4Zh',
         q,
-        limit: 10,
+        limit: 16,
         offset: offset,
         // G : Содержание, которое подходит для всех возрастов и людей.
         // PG : Чуть развращеннее 
