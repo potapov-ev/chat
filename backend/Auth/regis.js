@@ -4,9 +4,9 @@ const bcrypt = require('bcrypt');
 const { readFileSync, writeFileSync } = require('fs');
 
 router.post("/regis", (req, res) => {
-  res.set('Access-Control-Allow-Origin', '*');
+/*   res.set('Access-Control-Allow-Origin', '*'); todo удалить
   res.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
-  res.set('Access-Control-Allow-Headers', 'Content-Type');
+  res.set('Access-Control-Allow-Headers', 'Content-Type'); */
 
   const users = JSON.parse(readFileSync("Auth/users.json", "utf-8"));
   let hasThisLogin = false;

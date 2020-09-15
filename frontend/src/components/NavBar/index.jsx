@@ -79,7 +79,9 @@ const Navbar = () => {
           color="inherit"
           borderRadius="4px 0 0 4px"
         >
-          <StyledLink to="auth" >
+          <StyledLink 
+            to="auth" 
+          >
             Выйти
           </StyledLink>
         </StyledButton>

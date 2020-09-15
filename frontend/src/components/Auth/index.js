@@ -13,6 +13,9 @@ const Auth = ({ history }) => {
   console.log("Auth");
 
   const { setUserName, setUID } = useContext(UserContext);
+  localStorage.removeItem("uid");
+  localStorage.removeItem("userName");
+
   const [isLogin, setIsLogin] = useState(true);
 
   const toChat = (user = {}) => {

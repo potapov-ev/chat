@@ -26,7 +26,8 @@ const UserContextProvider = ({ children }) => {
         uid,
         setUID,
         userName,
-        setUserName
+        setUserName,
+        isUserLogged: uid && userName
       }}
     >
       {children}
