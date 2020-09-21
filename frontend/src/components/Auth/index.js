@@ -20,7 +20,7 @@ const Auth = ({ history }) => {
 
   const toChat = (user = {}) => {
     setUserName(user.name);
-    setUID(user.id)
+    setUID(user.uid)
 
     history.push("/chat");
   };

@@ -1,6 +1,6 @@
 let users = {};
 
-const getUsers = () => Object.keys(users).map(key => users[key].userName);
+const getUsers = () => Object.keys(users).map(key => users[key].name);
 
 const createSocket = user => {
   const cur_user = users[user.uid],
@@ -14,7 +14,7 @@ const createUser = user => {
   users =
   {
     [user.uid]: {
-      userName: user.userName,
+      name: user.name,
       uid: user.uid,
       sockets: [user.socket_id]
     }
@@ -58,10 +58,10 @@ module.exports = (server) => {
     // При обновлении страны будет новый socket.id
     const query = socket.request._query,
       user = {
-        userName: query.userName,
+        name: query.name,
         uid: query.uid,
         socket_id: socket.id 
-      }; 
+      };
 
     if (users[user.uid]) {
       createSocket(user);

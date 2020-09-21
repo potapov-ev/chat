@@ -25,10 +25,10 @@ const Login = ({ setIsLogin, toChat }) => {
     setError("");
     try {
       const res = await authSource.signIn(values);
-      toChat({ name: res.data.name, id: res.data.id });
+      toChat({ name: res.data.name, uid: res.data.uid });
     } catch (error) {
       console.log("login", error.response || error);
-      setError(error?.response?.data || error.toString());
+      setError(error.response?.data.message || error.toString());
     }
   };
 

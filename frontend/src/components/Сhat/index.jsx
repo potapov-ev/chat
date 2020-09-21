@@ -50,7 +50,7 @@ const Chat = () => {
       if (socket?.disconnect) socket.disconnect();
       
       socket = socketIOClient('ws://localhost:8989', {
-        query: 'userName=' + userName + '&uid=' + uid
+        query: 'name=' + userName + '&uid=' + uid
       });
 
       socket.on('updateUsersList', users => {
@@ -96,6 +96,7 @@ const Chat = () => {
       date: new Date(),
       message: message,
     };
+    console.log(1111, MessageInfo)
 
     setMessages(
       messages.concat([{

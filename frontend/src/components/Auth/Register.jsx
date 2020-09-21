@@ -28,9 +28,9 @@ const Register = ({ setIsLogin, toChat }) => {
   const signUp = async values => {
     setError("");
     try {
-      const user = { ...values, id: generateUID() };
+      const user = { ...values, uid: generateUID() };
       const res = await authSource.signUp(user);
-      toChat({ name: res.data.name, id: res.data.id });
+      toChat({ name: res.data.name, uid: res.data.uid });
     } catch (error) {
       console.log("regis", error.response || error);
       setError(error.response?.data || error.toString());
