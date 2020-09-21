@@ -5,6 +5,7 @@ import List from './List';
 import Loader from './Loader';
 import StyledLink from './StyledLink';
 import LinkButton from "./LinkButton"
+import StyledDrawer from "./StyledDrawer"
 
 export {
   StyledPopover,
@@ -13,7 +14,8 @@ export {
   List,
   Loader,
   StyledLink,
-  LinkButton
+  LinkButton,
+  StyledDrawer,
 };
 
 /* todo export { default as Name } from "./Name" */

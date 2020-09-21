@@ -46,7 +46,7 @@ export const themes = {
       myMessageTime: "#286496",
     },
     backgroundColors: {
-      users: "#ffffff",
+      users: "#ffffff", // todo - sidebar
       navBar: "#3598db",
       messages: "#f5f6f8",
       message: "#ffffff",

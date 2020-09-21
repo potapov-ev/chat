@@ -4,7 +4,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import ListItemText from '@material-ui/core/ListItemText';
-
+import StyledList from "./styled"
 function Container({
   list,
   rules = null,
@@ -15,7 +15,7 @@ function Container({
   emptyListMessage = ""
 }) {
   return (
-    <List>
+    <StyledList>
       {
         !!list.length
           ?
@@ -45,7 +45,7 @@ function Container({
           :
           emptyListMessage
       }
-    </List>
+    </StyledList>
   )
 }
 

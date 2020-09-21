@@ -8,7 +8,7 @@ const Container = styled.div`
   align-items: center;
   color: ${({ theme }) => theme.colors.secondary};
   background-color: ${p => p.theme.backgroundColors.navBar};
-  border-bottom: ${p => p.theme.border}; /* todo убрать везде */ 
+  border-bottom: ${p => p.theme.border};
 `;
 
 const LogoContainer = styled.div`
