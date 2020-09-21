@@ -30,16 +30,10 @@ const RightContaner = styled.div`
   align-items: center;
 `;
 
-const Styled_a = styled.a`
-  color: inherit;
-  text-decoration: none;
-`;
-
 export {
   Container,
   LogoContainer,
   LogoWrapper,
   Name,
   RightContaner,
-  Styled_a,
 };

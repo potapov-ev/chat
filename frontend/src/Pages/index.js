@@ -11,7 +11,7 @@ const BasePage = () => {
     <Switch>
       <Route path="/auth" render={AuthPage} />
       <Route path={[ "/", "/chat" ]} render={isUserLogged ? ChatPage : AuthPage} />
-      <Redirect to="/" />
+      <Redirect to="/" /> {/* Добавить еррор пэйдж */}
     </Switch>
   )
 };

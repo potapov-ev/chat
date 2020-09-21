@@ -1,6 +1,6 @@
 import React, { useState, useRef, useContext } from 'react';
 import { AppContext } from "context/AppContext"
-import { StyledPopover, StyledButton, StyledLink } from "components/common";
+import { StyledPopover, StyledButton, LinkButton } from "components/common";
 import { THEME_CONSTANTS } from "constants/common";
 import { PalleteIcon } from "icons";
 
@@ -10,7 +10,6 @@ import {
   LogoWrapper,
   Name,
   RightContaner,
-  Styled_a,
 } from "./styled";
 
 const Navbar = () => {
@@ -34,10 +33,6 @@ const Navbar = () => {
     }
   };
 
-  const toAuthHandler = () => {
-    
-  }
-
   return (
     <Container>
       <LogoContainer>
@@ -58,7 +53,6 @@ const Navbar = () => {
         >
           Выбрать тему
         </StyledButton>
-
         <StyledPopover
           open={open}
           setOpen={setOpen}
@@ -66,25 +60,17 @@ const Navbar = () => {
           handleSelect={handleSelect}
           list={THEME_CONSTANTS}
         />
-        <StyledButton
-          color="inherit"
-          onClick={toAuthHandler}
+        
+        <LinkButton
+          href="https://github.com/mutik0137/chat"
         >
-          <Styled_a href="https://github.com/mutik0137/chat">
-            Github
-          </Styled_a>
-        </StyledButton>
-        <StyledButton
-          /* todo сделаь общий копонент, чтобы нажжимать можно было в любую часть кнопки */
-          color="inherit"
-          borderRadius="4px 0 0 4px"
+          Github
+        </LinkButton>
+        <LinkButton
+          path="/auth"
         >
-          <StyledLink 
-            to="auth" 
-          >
-            Выйти
-          </StyledLink>
-        </StyledButton>
+          Выйти
+        </LinkButton>
       </RightContaner>
     </Container>
   )
