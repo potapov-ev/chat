@@ -15,6 +15,8 @@ require("./Chat/index")(server);
   columns: require("./DB/constants").SQL_QUERYS.USERS_TABLE_COLUMNS_TYPES,
 }) */
 
+require("./DB/dialogs").createTable();
+
 // Настройки для запросов с других доменов
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');

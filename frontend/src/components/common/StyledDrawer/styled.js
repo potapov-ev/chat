@@ -4,7 +4,7 @@ import Drawer from '@material-ui/core/Drawer';
 const StyledDrawer = styled(Drawer)`
   .paper {
     width: 240px;
-    background-color: ${p => p.theme.backgroundColors.users}
+    background-color: ${p => p.theme.backgroundColors.users} /* todo переименовать  users например на list*/
   } 
 `;
 

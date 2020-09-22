@@ -5,17 +5,16 @@ const { ERRORS_MESSAGES, STATE } = require("./constants");
 
 
 const {
-  LOGIN_ALREADY_EXISTS,
-  UID_ALREADY_EXISTS,
   USER_NOT_FOUND
-} = ERRORS_MESSAGES;
-const { SUCCESS } = STATE
+} = ERRORS_MESSAGES; // todo подумать как лучше поступпить с константами, куда перенести мб
+const { SUCCESS } = STATE;
+// todo подумать как лучше поступпить с константами, куда перенести мб
 
 const createConnection = config => mysql.createConnection({ ...DBconfig, ...config });
 
-const createDB = name => {
+const createDB = () => {
   const connection = createConnection();
-  const sql = `CREATE DATABASE ${name}`;
+  const sql = "CREATE DATABASE chat";
 
   connection.query(sql, error =>
     error ? console.error("Database creation error", error) : console.log("Database created")

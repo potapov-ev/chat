@@ -1,10 +1,14 @@
 import React from 'react'
-import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
-import ListItemText from '@material-ui/core/ListItemText';
-import StyledList from "./styled"
+
+import {
+  StyledList,
+  StyledListItemText
+} from "./styled";
+
+
 function Container({
   list,
   rules = null,
@@ -12,8 +16,9 @@ function Container({
   Icon,
   button,
   divider,
-  emptyListMessage = ""
-}) {
+  emptyListMessage = "",
+}) { /* todo отдельно передавать стили для listitem и т п */
+  /* todo узнать как менять тему с задержкой */
   return (
     <StyledList>
       {
@@ -22,7 +27,9 @@ function Container({
           list.map((item, index) => (
             <ListItem
               button={button}
-              onClick={() => { handleSelect && handleSelect(item[rules.select]) }}
+              onClick={() => handleSelect && 
+                handleSelect(rules?.select ? item[rules.select] : item) 
+              }
               divider={divider && (index !== list.length - 1)}
             >
               {
@@ -36,9 +43,12 @@ function Container({
                   </Avatar>
                 </ListItemAvatar>
               }
-              <ListItemText
+              <StyledListItemText
                 primary={rules ? item[rules.primary] : item}
-                secondary={rules && item[rules.secondary]}
+                secondary={rules?.secondary && item[rules.secondary]}
+                classes={{
+                  primary: "primary"
+                }}
               />
             </ListItem>
           ))

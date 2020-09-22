@@ -20,7 +20,7 @@ const Header = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  border-bottom: ${p => p.theme.border};
+  /* border-bottom: ${p => p.theme.border}; */
 `;
 
 // todo добавить ... и tooltip

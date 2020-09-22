@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require('bcrypt');
-const { addUser, hasUserLogin } = require("../DB");
+const { addUser, hasUserLogin } = require("../DB/users");
 // todo переименовать login и regis на signin и signUp
 
 const LOGIN_ALREADY_EXISTS = "Такой логин уже существует";
