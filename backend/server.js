@@ -10,12 +10,13 @@ const port = 8989;
 
 require("./Chat/index")(server);
 
-/* require("./DB").createTable({
-  name: "users",
-  columns: require("./DB/constants").SQL_QUERYS.USERS_TABLE_COLUMNS_TYPES,
-}) */
+/* require("./DB/messages").createMessagesTable();
+ */ 
+require("./DB/messages").updateStatus({
+  id: 2,
+  isReaded: true
+});
 
-require("./DB/dialogs").createTable();
 
 // Настройки для запросов с других доменов
 app.use((req, res, next) => {

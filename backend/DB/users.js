@@ -1,9 +1,11 @@
 const mysql = require("mysql2");
 
 const DBconfig = require("./config.json");
-const { ERRORS_MESSAGES, STATE } = require("./constants");
+const { ERRORS_MESSAGES, STATE, SQL_QUERYS } = require("./constants");
 
-
+const {
+  USERS_TABLE_COLUMNS_TYPES
+} = SQL_QUERYS;
 const {
   USER_NOT_FOUND
 } = ERRORS_MESSAGES; // todo подумать как лучше поступпить с константами, куда перенести мб
@@ -22,10 +24,9 @@ const createDB = () => {
   connection.end();
 };
 
-const createTable = config => {
-  const { connectionConfig, name, columns } = config;
-  const connection = createConnection(connectionConfig);
-  const sql = `CREATE TABLE ${name} (${columns})`;
+const createUsersTable = () => {
+  const connection = createConnection(DBconfig);
+  const sql = `CREATE TABLE users (${USERS_TABLE_COLUMNS_TYPES})`;
 
   connection.query(sql, error =>
     error ? console.error("Table creation error", error) : console.log("Table created")
@@ -54,8 +55,8 @@ const getUsers = async () => {
 
 const addUser = async user => {
   const connection = createConnection();
-  const sql = "INSERT INTO users(uid, name, login, pass) VALUES(?, ?, ?, ?)";
-  const userData = [user.uid, user.name, user.login, user.pass];
+  const sql = "INSERT INTO users(name, login, pass) VALUES(?, ?, ?)"; // !!! 9 цифр в user.uid
+  const userData = [user.name, user.login, user.pass];
 
   connection.query(sql, userData, error =>
     error ? console.error("Error adding user", error) : console.log("User added")
@@ -92,9 +93,7 @@ const hasUserLogin = async userLogin => {
 };
 
 module.exports = {
-  createDB,
-  createTable,
-  clearUsersTable,
+  createUsersTable,
   addUser,
   getUsers,
   deleteUser,

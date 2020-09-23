@@ -96,7 +96,6 @@ const Chat = () => {
       date: new Date(),
       message: message,
     };
-    console.log(1111, MessageInfo)
 
     setMessages(
       messages.concat([{

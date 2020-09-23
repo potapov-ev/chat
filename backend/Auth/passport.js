@@ -37,6 +37,6 @@ passport.use(
       });
     }
   )
-);
+); /* todo подумать почему такое разделение нужно и полезно */
 
 module.exports = passport;
