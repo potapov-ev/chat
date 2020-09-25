@@ -38,6 +38,34 @@ const updateStatus = ({ id, isReaded }) => {
   connection.end();
 };
 
+const getMessages = async dialogId => {
+  const connection = createConnection();
+  const sql = "SELECT * FROM messages WHERE dialogId=?";
+  let result = [];
+
+  await connection.promise().query(sql, [dialogId], (error, results) => {
+    if (error) { /* todo во всех ошибках добавить префикс DB console.error*/
+      console.log("Error receiving messages", error);
+    } else {
+      result = [...results];
+      console.log("Messages received");
+    }
+  });
+  connection.end();
+
+  return result;
+};
+
+const deleteMessage = id => {
+  const connection = createConnection();
+  const sql = "DELETE FROM messages WHERE id=?";
+
+  connection.query(sql, [id], error => 
+    error ? console.log("Error deleting a message", error) : console.log("Message deleted")
+  );
+  connection.end();
+};
+
 module.exports = {
   addMessage,
   updateStatus

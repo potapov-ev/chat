@@ -10,8 +10,7 @@ const port = 8989;
 
 require("./Chat/index")(server);
 
-/* require("./DB/messages").createMessagesTable();
- */ 
+/* require("./DB/messages").createMessagesTable(); */ 
 require("./DB/messages").updateStatus({
   id: 2,
   isReaded: true
