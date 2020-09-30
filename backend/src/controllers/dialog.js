@@ -1,5 +1,6 @@
 
 const { STATE } = require("../core/constants");
+const { getSocketByUID } = require("../utils");
 const {
   createDialog,
   getDialogs,
@@ -15,6 +16,7 @@ class DialogController {
     getDialogs(req.body.uid)
       .then(result => {
         if (result.state === STATE.SUCCESS) {
+          const socketId = getSocketByUID(this.io, req.body.partnerId);
           res.status(200).json(result.data);
         } else {
           console.log("Get dialogs", result.error);
@@ -31,7 +33,8 @@ class DialogController {
     createDialog({ ...req.body.data, authorId: req.user.uid })
       .then(result => {
         if (result.state === STATE.SUCCESS) {
-          DIALOG_CREATED.
+          const socketId = getSocketIdByUID(this.io, req.body.partnerId);
+          //this.io.sockets.socket(socketid).emit
           res.status(200);
         } else {
           console.log("Create dialog", result.error);

@@ -5,9 +5,9 @@ const {
 } = require("../controllers");
 
 const createRoutes = (app, io) => {
-  const userController = new UserController();
-  const dialogController = new DialogController();
-  const messageController = new MessageController();
+  const userController = new UserController(io);
+  const dialogController = new DialogController(io);
+  const messageController = new MessageController(io);
  
   app.get("/user/all", userController.getAll);
   app.post("/user/regis", userController.regis);

@@ -94,6 +94,8 @@ module.exports = server => {
   const io = socket(server);
 
   io.on('connection', function(socket) {
+    socket.userID = socket.request._query.uid;
+
     /* socket.on('DIALOGS:JOIN', (dialogId) => {
       socket.dialogId = dialogId;
       socket.join(dialogId); // join ???
