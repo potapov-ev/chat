@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Form, Field } from "react-final-form";
-import { authSource } from "Auth/sources";
+import { userSource } from "sources";
 import { loginValidate } from "Auth/utils";
 import { StyledTextField, StyledButton } from "components/common";
 
@@ -24,7 +24,8 @@ const Login = ({ setIsLogin, toChat }) => {
   const signIn = async values => {
     setError("");
     try {
-      const res = await authSource.signIn(values);
+      const res = await userSource.signIn(values);
+      console.log(321,res);
       toChat({ name: res.data.name, uid: res.data.uid });
     } catch (error) {
       console.log("login", error.response || error);

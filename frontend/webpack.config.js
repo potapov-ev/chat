@@ -76,6 +76,8 @@ module.exports = {
         alias: {
             src: path.resolve(__dirname, "src"),
             components: path.resolve(__dirname, "src/components"),
+            sources: path.resolve(__dirname, "src/sources"),
+            services: path.resolve(__dirname, "src/services"),
             Chat: path.resolve(__dirname, "src/components/Chat"),
             Auth: path.resolve(__dirname, "src/components/Auth"),
             Core: path.resolve(__dirname, "src/Core"),
@@ -83,6 +85,7 @@ module.exports = {
             utils: path.resolve(__dirname, "src/utils"),
             context: path.resolve(__dirname, "src/context"),
             constants: path.resolve(__dirname, "src/constants"),
+            
         },
     },
     devServer: {

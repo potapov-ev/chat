@@ -1,13 +1,15 @@
 const mysql = require("mysql2");
+const DBconfig = require("./config.json");
+const { DIALOGS_TABLE_COLUMNS_TYPES } = require("./constants");
+const { STATE } = require("../core/constants");
 
-const DBconfig = require("./config.json"); // вынести все общее, например создать 4 класаа, и инициализировать контруктуры
-const { SQL_QUERYS } = require("./constants");
+const _result = {
+  state: STATE.LOADING,
+  error: {},
+  data: null
+};
 
-
-const { DIALOGS_TABLE_COLUMNS_TYPES } = SQL_QUERYS;
-
-const createConnection = config => mysql.createConnection({ ...DBconfig, ...config });
-
+// #region Служебные 
 const createDB = () => { // todo эта функция везде не нужна, придумать чо-нить
   const connection = createConnection();
   const sql = "CREATE DATABASE chat";
@@ -27,15 +29,29 @@ const createDialogsTable = () => {
   );
   connection.end();
 };
+// #endregion
 
-const createDialog = data => {
+const createConnection = config => mysql.createConnection({ ...DBconfig, ...config });
+
+const createDialog = async data => {
   const connection = createConnection();
   const sql = "INSERT INTO dialogs(authorId, partnerId, lastUpdate) VALUES(?, ?, ?)";
   const dialogData = [data.authorId, data.partnerId, data.lastUpdate];
+  let result = { ..._result };
 
-  connection.query(sql, dialogData, error => 
-    error ? console.log("Creation dialog error", error) : console.log("Dialog created"));
+  await connection.promise().query(sql, dialogData)
+    .then(() => {
+      result.state = STATE.SUCCESS;
+      console.log("Dialog created");
+    })
+    .catch(error => {
+      result.state = STATE.ERROR;
+      result.error = error;
+      console.log("Creation dialog error", error);
+    });
   connection.end();
+
+  return result;
 };
 
 // SELECT * FROM table_name LIMIT 2,3;
@@ -43,28 +59,45 @@ const createDialog = data => {
 const getDialogs = async userId => {
   const connection = createConnection();
   const sql = "SELECT * FROM dialogs WHERE authorId=? OR partnerId=?";
-  let result = [];
+  let result = { ..._result };
 
-  await connection.promise().query(sql, [userId, userId] ).then(dialogs => {
-    result = [...dialogs[0]]
+  await connection.promise().query(sql, [userId, userId] )
+  .then(dialogs => {
+    result.data = [...dialogs[0]];
+    result.state = STATE.SUCCESS;
     console.log("Dialogs received")
-  }).catch(error => console.log("Error getting dialogs", error));
+  })
+  .catch(error => {
+    result.state = STATE.ERROR;
+    result.error = error;
+    console.log("Error getting dialogs", error);
+  });
   connection.end();
   
   return result;
 };
 
-const deleteDialog = id => {
+const deleteDialog = async id => {
   const connection = createConnection();
   const sql = "DELETE FROM dialogs WHERE id=?";
-  
-  connection.query(sql, [id], error =>
-    error ? console.log("Error deleting dialogs", error) : console.log("Dialogs deleted"));
+  let result = { ..._result };
+
+  await connection.promise().query(sql, [id])
+    .then(() => {
+      result.STATE.SUCCESS;
+      console.log("Dialogs deleted")
+    })
+    .catch(error => {
+      result.state = STATE.ERROR;
+      result.error = error;
+      console.log("Error deleting dialogs", error)
+    });
   connection.end();
+
+  return result;
 };
 
 module.exports = {
-  createDialogsTable, // todo в конце убрать createTable везде
   createDialog,
   getDialogs,
   deleteDialog,

@@ -1,1 +1,1 @@
-export const TEST_STAND = "http://localhost:8989/";
+export const DEV_STAND = "http://localhost:8989";

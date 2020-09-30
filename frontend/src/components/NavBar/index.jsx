@@ -11,7 +11,7 @@ import {
   Name,
   RightContaner,
 } from "./styled";
-
+// todo Переименовать на ХЕдер
 const Navbar = () => {
   const { setLightTheme, setPurpleTheme, setDarkTheme } = useContext(AppContext);
   const [open, setOpen] = useState(false); // название

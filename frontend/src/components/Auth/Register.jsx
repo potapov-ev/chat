@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Form, Field } from "react-final-form";
-import { authSource } from "Auth/sources";
+import { userSource } from "sources";
 import { generateUID, regisValidate } from "Auth/utils";
 import {
   StyledTextField,
@@ -29,11 +29,11 @@ const Register = ({ setIsLogin, toChat }) => {
     setError("");
     try {
       const user = { ...values, uid: generateUID() };
-      const res = await authSource.signUp(user);
+      const res = await userSource.signUp(user);
       toChat({ name: res.data.name, uid: res.data.uid });
     } catch (error) {
       console.log("regis", error.response || error);
-      setError(error.response?.data || error.toString());
+      setError(error.response?.data.message || error.toString());
     }
   };
 

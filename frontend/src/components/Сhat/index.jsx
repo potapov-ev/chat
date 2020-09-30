@@ -5,14 +5,15 @@ import React, {
   useCallback,
   useContext
 } from 'react';
-import socketIOClient from 'socket.io-client';
+import socket from 'Core/socket-io';
 import { UserContext } from 'context/UserContext'
 import { Loader } from "components/common";
-
-import Users from "./Users";
-import Messages from "./Messages";
-import TextForm from "./TextForm";
-import GifBox from "./GifBox";
+import {
+  SideBar,
+  Messages,
+  TextForm,
+  GiffBox,
+} from "./components";
 import videoSrc from "./pashalka.mp4";
 
 import {
@@ -21,16 +22,13 @@ import {
   Pashalka
 } from "./styled";
 
-let socket = null;
-
 const Chat = () => {
   // todo Разобраться с socket
   // todo обновить версии библиотек
   // todo подумать о лучшей архитектуре, распределение state, заюзать context
-  // todo Мб заюзать lazy Suspense к GifBox
-  const { uid, userName } = useContext(UserContext);
+  // todo Мб заюзать lazy Suspense к GiffBox
+  const { userName } = useContext(UserContext);
   const [isChatReady, setIsChatReady] = useState(false);
-  const [users, setUsers] = useState([]);
   const [messages, setMessages] = useState([]);
   const [isGif, setIsGif] = useState(false);
   const messagesEl = useRef(null); // ссылка на DOM-элемент messages
@@ -48,14 +46,6 @@ const Chat = () => {
       setIsChatReady(true);
 
       if (socket?.disconnect) socket.disconnect();
-      
-      socket = socketIOClient('ws://localhost:8989', {
-        query: 'name=' + userName + '&uid=' + uid
-      });
-
-      socket.on('updateUsersList', users => {
-        setUsers(users);
-      });
     }
   }, [userName]);
 
@@ -69,7 +59,7 @@ const Chat = () => {
 
       return () => {
         socket.off('message', helper);
-      }
+      };
     }
   }, [socket]);
 
@@ -77,8 +67,8 @@ const Chat = () => {
     scrollToBottom();
   }, [messages]);
 
-  const setMessagesHelper = (message, messagess) => {
-    setMessages(messagess.concat([message]));
+  const setMessagesHelper = (message, messages) => {
+    setMessages([...messages, message]);
   };
 
   const sendMessage = message => {
@@ -124,7 +114,7 @@ const Chat = () => {
         isChatReady
           ?
           <>
-            <Users users={users} />
+            <SideBar />
             <Dialog>
               <Messages
                 messages={messages}
@@ -134,7 +124,7 @@ const Chat = () => {
               {
                 isGif
                   ?
-                  <GifBox
+                  <GiffBox
                     sendMessage={sendMessage}
                     toggleGif={toggleGif}
                   />

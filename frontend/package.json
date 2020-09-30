@@ -4,6 +4,7 @@
   "description": "real-time chat app with GIFs support",
   "proxy": "http://localhost:8989/",
   "dependencies": {
+    "@babel/plugin-proposal-class-properties": "7.10.4",
     "@material-ui/core": "4.10.2",
     "axios": "0.19.2",
     "core-js": "3.6.5",
