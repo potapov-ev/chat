@@ -105,13 +105,13 @@ const deleteUser = uid => {
 };
 
 // todo этим 2 функциям тут не место
-const getUser = async userLogin => {
+const getUser = async ({ _login, _uid }) => { // key = login || uid
   const USER_NOT_FOUND = "Пользователь с таким логином не найден";
-  const checkThisLogin = ({ login }) => login === userLogin;
+  const checkThisUser = ({ login, uid }) => login === _login || uid === _uid;
   const result = { ..._result };
 
   const users = (await getUsers()).data;
-  const user = users.find(checkThisLogin);
+  const user = users.find(checkThisUser);
   
   if (user) {
     result.data = user;

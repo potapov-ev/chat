@@ -26,7 +26,6 @@ import {
 } from "./styled";
 
 const Chat = () => {
-  // todo подумать о лучшей архитектуре, распределение state, заюзать context
   // todo Мб заюзать lazy Suspense к GiffBox
   const { userName } = useContext(UserContext);
   const { currentDialogId } = useContext(DialogContext);
@@ -71,7 +70,7 @@ const Chat = () => {
   }; */
   //#endregion
 
-  const sendMessage = async (message) => {
+  const sendMessage = useCallback(async (message) => {
     if (message.text?.toLowerCase() === "атас") {
       pashalka.current.style.display = "block";
       video.current.play();
@@ -88,10 +87,8 @@ const Chat = () => {
       isReaded: false,
     };
 
-
     try {
       const res = await messageSource.create(newMessage);
-      console.log(321321, res.data)
       setMessages([...messages, res.data]);
     } catch (error) {
       console.log("messageSource.create", error);
@@ -99,7 +96,7 @@ const Chat = () => {
     /* socket.emit('message', {
       ...MessageInfo
     }); */
-  };
+  }, [messages, currentDialogId]);
 
   const toggleGif = useCallback(() => {
     setIsGiff(!isGiff);
@@ -117,6 +114,7 @@ const Chat = () => {
                 messages={messages}
                 setMessages={setMessages}
                 isGiff={isGiff}
+                dialogId={currentDialogId}
               />
               {
                 isGiff

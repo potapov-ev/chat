@@ -9,7 +9,7 @@ module.exports = {
       id INT AUTO_INCREMENT PRIMARY KEY, 
       authorId INT NOT NULL, 
       partnerId INT NOT NULL,
-      partnerName VARCHAR(30) NOT NULL,
+      partnerName VARCHAR(30) NOT NULL, 
       lastUpdate VARCHAR(14) NOT NULL, 
       lastMessage TEXT, 
       FOREIGN KEY (authorId) REFERENCES users(uid)
@@ -27,6 +27,7 @@ module.exports = {
       FOREIGN KEY (dialogId) REFERENCES dialogs(id)
     `,
 };
+// todo удалить partnerName из DIALOGS
 
 /* todo  строки в байт посчитать
 function lengthInUtf8Bytes(str) {

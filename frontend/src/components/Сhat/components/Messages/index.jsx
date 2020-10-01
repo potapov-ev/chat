@@ -1,9 +1,7 @@
 import React, {
   useEffect,
   useRef,
-  useContext
 } from 'react';
-import { DialogContext } from 'context/DialogContext'
 import { messageSource } from "sources";
 import Message from "../Message";
 
@@ -13,8 +11,7 @@ import {
   NoMessages
 } from "./styled";
 
-const Messages = ({ messages, setMessages, isGiff }) => {
-  const { currentDialogId } = useContext(DialogContext);
+const Messages = ({ messages, setMessages, isGiff, dialogId }) => {
   const messagesEl = useRef(null);
 
   const getMessages = async dialogId => {
@@ -27,10 +24,10 @@ const Messages = ({ messages, setMessages, isGiff }) => {
   };
 
   useEffect(() => {
-    if (currentDialogId !== -1) {
-      getMessages(currentDialogId);
+    if (dialogId !== -1) {
+      getMessages(dialogId);
     }
-  }, [currentDialogId]);
+  }, [dialogId]);
 
   const scrollToBottom = () => {
     if (messagesEl?.current) {

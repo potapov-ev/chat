@@ -21,7 +21,7 @@ passport.use(
       passwordField: "password"
     },
     (userLogin, password, done) => {
-      getUser(userLogin)
+      getUser({ _login: userLogin })
         .then(result => {
           if (Object.keys(result.error).length) {
             console.error("LogIn", result.error);

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import axios from 'axios';
+import { giffSource } from "sources";
 import { SendMessageIcon, SendGificon } from "icons";
 import { StyledButton, StyledTextField, Loader } from 'components/common'
 import { debounce } from "utils";
@@ -47,11 +47,10 @@ const GifBox = ({ toggleGif, sendMessage }) => {
     setGIFs([]);
 
     if (!search) return;
-    
+
     setLoading(true);
     getGIFs(search);
-  }, 800),
-    []);
+  }, 800), []);
 
   const handleChange = e => {
     const value = e.target.value;
@@ -66,44 +65,36 @@ const GifBox = ({ toggleGif, sendMessage }) => {
     });
   };
 
-  function getGIFs(value) {
+  async function getGIFs(value) {
     setPlaceholder("");
     const q = value || search;
     // todo поискать подобные крутые темы (стикеры и т.п.)
-    // todo url вынести, добавить source, useFetch, порефакторить каждый компонент
-    axios.get('https://api.giphy.com/v1/gifs/search', {
-      params: {
-        api_key: 'ln9tgm0RCZiGOcD5D6Gm3Wr8JYXLq4Zh',
-        q,
-        limit: 16,
-        offset: offset,
-        // G : Содержание, которое подходит для всех возрастов и людей.
-        // PG : Чуть развращеннее 
-        // PG-13 : Жестче
-        // Р : Хард
-        rating: "PG-13",
-        lang: "ru"
-      }
-    })
-      .then(response => {
-        const results = response.data.data || response.data;
 
-        if (results.length) {
-          const gifs = results.map(gif => ({
-            original: gif.images.fixed_height.url,
-            fixed: gif.images.fixed_height_small.url,
-          }));
-
-          setGIFs(GIFs.concat(gifs));
-        } else if (value) {
-          setPlaceholder("По запросу ничего не найдено");
+    try {
+      const res = await giffSource.get({
+        params: {
+          q,
+          offset: offset,
         }
-        setLoading(false);
-      })
-      .catch(error => {
-        setLoading(false);
-        console.log("getGIFs", error);
       });
+
+      const results = response.data.data || response.data;
+
+      if (results.length) {
+        const gifs = results.map(gif => ({
+          original: gif.images.fixed_height.url,
+          fixed: gif.images.fixed_height_small.url,
+        }));
+
+        setGIFs(GIFs.concat(gifs));
+      } else if (value) {
+        setPlaceholder("По запросу ничего не найдено");
+      }
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(giffSource.get, error);
+    }
   }
 
   return (

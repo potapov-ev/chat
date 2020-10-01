@@ -1,7 +1,8 @@
 import React, { 
   useState, 
   useContext,
-  memo } from 'react';
+  memo 
+} from 'react';
 import { DialogContext } from 'context/DialogContext'
 import {
   List,
@@ -10,13 +11,13 @@ import {
 import {
   SyledNavLink
 } from "./styled"
-// todo подумать над надписями
-// todo переименовать в sidebar
+
 const rules = {
   primary: "partnerName",
   secondary: "lastMessage",
   select: "id"
 };
+
 const DialogList = ({ 
   dialogs,
   UserIcon

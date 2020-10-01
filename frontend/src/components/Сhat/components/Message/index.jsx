@@ -16,7 +16,7 @@ const Message = ({ message }) => (
       console.log("Message")
     }
     <UserName>
-      {localStorage.getItem('userName')} {/* todo заменить все localStorage по возиожности  */}
+      {message.authorName} {/* todo заменить все localStorage по возиожности  */}
     </UserName>
     <Time>
       {message.time}

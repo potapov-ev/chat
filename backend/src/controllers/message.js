@@ -5,6 +5,7 @@ const {
   getMessages,
   deleteMessage
 } = require("../mysql/messages");
+const { getUser } = require("../mysql/users");
 
 class MessageController {
   constructor(io) {
@@ -15,7 +16,22 @@ class MessageController {
     addMessage({ ...req.body.data, authorId: req.user.uid })
       .then(result => {
         if (result.state === STATE.SUCCESS) {
-          res.status(200).json(result.data);
+          const message = result.data;
+          // Добавим поле partnerName для отображения имени пользователя в списках диалогов
+          getUser({ _uid: message.authorId })
+            .then(result => {
+              if (result.state === STATE.SUCCESS) {
+                const data = { ...message, authorName: result.data.name };
+                res.status(200).json(data);
+              } else {
+                console.log("message.create -> getUser.then", result.error); // todo везде навести такую красоту dialog.create -> getUser.then
+                res.status(400).json(result.error);
+              }
+            })
+            .catch(error => {
+              console.log("message.create -> getUser(_uid)", error);
+              res.status(400).json(error);
+            })
         } else {
           console.log(321,"Create message", result.error);
           res.status(400).json(result.error);
@@ -47,7 +63,30 @@ class MessageController {
     getMessages(req.query.dialogId)
       .then(result => {
         if (result.state === STATE.SUCCESS) {
-          res.status(200).json(result.data);
+          const promises = result.data.map(message => (
+            getUser({ _uid: message.authorId })
+              .then(result => {
+                if (result.state === STATE.SUCCESS) {
+                  return { ...message, authorName: result.data.name };
+                } else {
+                  console.log("message.getall -> getUser.then", result.error);
+                  res.status(400).json(result.error);
+                }
+              })
+              .catch(error => {
+                console.log("message.getall -> getUser(_uid)", error);
+                res.status(400).json(error);
+              })
+          ));
+
+          Promise.all(promises)
+            .then(results => {
+              res.status(200).json(results);
+            })
+            .catch(error => {
+              console.log("message.getall -> Promise.all", error);
+              res.status(400).json(error);
+            })
         } else {
           console.log("Get messages", result.error);
           res.status(400).json(result.error);

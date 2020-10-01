@@ -23,12 +23,11 @@ import {
   Header,
 } from "./styled"
 // todo подумать над надписями
-// todo переименовать в sidebar
 const SideBar = () => {
   const { uid } = useContext(UserContext);
 
   const [isOpen, setOpen] = useState(false);
-  const [users, setUsers] = useState([]); // todo кроме меня
+  const [users, setUsers] = useState([]);
   const [dialogs, setDialogs] = useState([]);
 
   const getUsers = async () => {
