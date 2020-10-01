@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { NavLink } from "react-router-dom";
 
 const Container = styled.div`
   padding: 12px;
@@ -23,9 +24,15 @@ const Header = styled.div`
   /* border-bottom: ${p => p.theme.border}; */
 `;
 
+const SyledNavLink = styled(NavLink)`
+  color: inherit;
+  text-decoration: none;
+`;
+
 // todo добавить ... и tooltip
 
 export {
   Container,
-  Header
+  Header,
+  SyledNavLink
 };

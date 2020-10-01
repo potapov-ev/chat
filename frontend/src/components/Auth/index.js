@@ -14,17 +14,16 @@ const Auth = ({ history }) => {
 
   const { setUserName, setUID } = useContext(UserContext);
   localStorage.removeItem("uid");
-  localStorage.removeItem("userName");
 
   const [isLogin, setIsLogin] = useState(true);
 
   const toChat = (user = {}) => {
-    setUserName(user.name);
     setUID(user.uid)
+    setUserName(user.name);
 
     history.push("/chat");
   };
-
+  // todo сделать нормальный logout passport
   return (
     <PageContainer>
       {

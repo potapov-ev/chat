@@ -1,22 +1,26 @@
-import React from 'react';
-
+import React, { useContext, useEffect } from 'react';
+import { DialogContext } from "context/DialogContext";
 import Chat from "components/Сhat";
 import NavBar from "components/NavBar";
-import { themes } from "Core/themes";
 
 import Container from "./styled";
 
-const ChatPage = () => {
-  const theme = themes.lightTheme;
+const ChatPage = ({ location }) => {
+  const { setCurrentDialogId } = useContext(DialogContext);
+
+  useEffect(() => {
+    const dialogId = location?.pathname.split("/").pop();
+
+    if (dialogId && Number(dialogId) == dialogId) {
+      setCurrentDialogId(dialogId);
+    }
+
+  }, [location?.pathname])
 
   return (
     <Container>
-      <NavBar
-        backgroundColor={theme.myMessage}
-      />
-      <Chat 
-        theme={theme}
-      />
+      <NavBar />
+      <Chat />
     </Container>
   );
 };

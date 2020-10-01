@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Form, Field } from "react-final-form";
 import { userSource } from "sources";
-import { generateUID, regisValidate } from "Auth/utils";
+import { regisValidate } from "Auth/utils";
 import {
   StyledTextField,
   StyledButton
@@ -28,7 +28,7 @@ const Register = ({ setIsLogin, toChat }) => {
   const signUp = async values => {
     setError("");
     try {
-      const user = { ...values, uid: generateUID() };
+      const user = { ...values };
       const res = await userSource.signUp(user);
       toChat({ name: res.data.name, uid: res.data.uid });
     } catch (error) {
@@ -38,9 +38,6 @@ const Register = ({ setIsLogin, toChat }) => {
   };
 
   const handleOnSubmit = values => {
-    localStorage.removeItem("uid");
-    localStorage.removeItem("userName");
-
     signUp(values);
   };
 

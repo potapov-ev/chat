@@ -1,6 +1,5 @@
 const bodyParser = require('body-parser');
 const session = require('express-session');
-const cookieParser = require('cookie-parser')
 const passport = require("../middlewares/passport");
 
 const useMiddlewares = app => {
@@ -24,7 +23,7 @@ const useMiddlewares = app => {
 
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
-  app.use(cookieParser()); // todo попробовать удалить 
+  //app.use(cookieParser()); // todo попробовать удалить 
 
   app.use(session({
     secret: "very secret this is",

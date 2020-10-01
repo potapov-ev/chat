@@ -6,6 +6,7 @@ import React, {
   useContext
 } from 'react';
 import socket from 'Core/socket-io';
+
 import { UserContext } from 'context/UserContext'
 import { Loader } from "components/common";
 import {
@@ -92,7 +93,7 @@ const Chat = () => {
         ...MessageInfo
       }])
     );
-
+    console.log(32)
     socket.emit('message', {
       ...MessageInfo
     });

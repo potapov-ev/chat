@@ -10,6 +10,8 @@ const _result = {
 };
 
 // #region Служебные
+const createConnection = config => mysql.createConnection({ ...DBconfig, ...config });
+
 const createDB = () => {
   const connection = createConnection();
   const sql = "CREATE DATABASE chat";
@@ -39,7 +41,6 @@ const clearUsersTable = () => {
 }
 // #endregion
 
-const createConnection = config => mysql.createConnection({ ...DBconfig, ...config });
 
 const getUsers = async (uid = -1) => {
   const connection = createConnection();
@@ -136,5 +137,6 @@ module.exports = {
   getUsers,
   deleteUser,
   getUser,
-  hasUserLogin
+  hasUserLogin,
+  createUsersTable
 };

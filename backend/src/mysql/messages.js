@@ -10,6 +10,8 @@ const _result = {
 };
 
 // #region Служебные
+const createConnection = config => mysql.createConnection({ ...DBconfig, ...config });
+
 const createMessagesTable = () => {
   const connection = createConnection(DBconfig);
   const sql = `CREATE TABLE messages (${MESSAGES_TABLE_COLUMNS_TYPES})`;
@@ -21,7 +23,6 @@ const createMessagesTable = () => {
 };
 // #endregion
 
-const createConnection = config => mysql.createConnection({ ...DBconfig, ...config });
 
 const addMessage = async message => {
   const connection = createConnection();
@@ -109,5 +110,6 @@ module.exports = {
   addMessage,
   updateStatus,
   getMessages,
-  deleteMessage
+  deleteMessage,
+  createMessagesTable
 };

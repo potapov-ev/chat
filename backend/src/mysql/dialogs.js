@@ -10,6 +10,8 @@ const _result = {
 };
 
 // #region Служебные 
+const createConnection = config => mysql.createConnection({ ...DBconfig, ...config });
+
 const createDB = () => { // todo эта функция везде не нужна, придумать чо-нить
   const connection = createConnection();
   const sql = "CREATE DATABASE chat";
@@ -31,17 +33,23 @@ const createDialogsTable = () => {
 };
 // #endregion
 
-const createConnection = config => mysql.createConnection({ ...DBconfig, ...config });
-
 const createDialog = async data => {
   const connection = createConnection();
-  const sql = "INSERT INTO dialogs(authorId, partnerId, lastUpdate) VALUES(?, ?, ?)";
-  const dialogData = [data.authorId, data.partnerId, data.lastUpdate];
+  const sql = `INSERT INTO dialogs(authorId, partnerId, partnerName, lastUpdate, lastMessage)
+    VALUES(?, ?, ?, ?, ?)`;
+  const dialogData = [
+    data.authorId, 
+    data.partnerId, 
+    data.partnerName, 
+    data.lastUpdate,
+    data.lastMessage
+  ];
   let result = { ..._result };
 
   await connection.promise().query(sql, dialogData)
-    .then(() => {
+    .then((results) => {
       result.state = STATE.SUCCESS;
+      result.data = { ...data, id: results[0].insertId };
       console.log("Dialog created");
     })
     .catch(error => {
@@ -58,7 +66,7 @@ const createDialog = async data => {
 // Выбирает 3 записи из таблицы, начиная с 2 записи.
 const getDialogs = async userId => {
   const connection = createConnection();
-  const sql = "SELECT * FROM dialogs WHERE authorId=? OR partnerId=?";
+  const sql = "SELECT * FROM dialogs WHERE authorId=? OR partnerId=? ORDER BY lastUpdate DESC";
   let result = { ..._result };
 
   await connection.promise().query(sql, [userId, userId] )
@@ -101,4 +109,5 @@ module.exports = {
   createDialog,
   getDialogs,
   deleteDialog,
+  createDialogsTable, // todo убрать
 };

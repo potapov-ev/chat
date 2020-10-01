@@ -25,7 +25,6 @@ const Login = ({ setIsLogin, toChat }) => {
     setError("");
     try {
       const res = await userSource.signIn(values);
-      console.log(321,res);
       toChat({ name: res.data.name, uid: res.data.uid });
     } catch (error) {
       console.log("login", error.response || error);
@@ -34,9 +33,6 @@ const Login = ({ setIsLogin, toChat }) => {
   };
 
   const handleOnSubmit = values => {
-    localStorage.removeItem("uid");
-    localStorage.removeItem("userName");
-
     signIn(values);
   };
 

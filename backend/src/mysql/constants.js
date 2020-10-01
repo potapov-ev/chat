@@ -9,7 +9,9 @@ module.exports = {
       id INT AUTO_INCREMENT PRIMARY KEY, 
       authorId INT NOT NULL, 
       partnerId INT NOT NULL,
+      partnerName VARCHAR(30) NOT NULL,
       lastUpdate VARCHAR(14) NOT NULL, 
+      lastMessage TEXT, 
       FOREIGN KEY (authorId) REFERENCES users(uid)
     `,
   MESSAGES_TABLE_COLUMNS_TYPES: `

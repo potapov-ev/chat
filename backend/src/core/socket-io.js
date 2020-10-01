@@ -88,26 +88,5 @@ const createSocket = server => {
 
 module.exports = createSocket; */
 
-const socket = require('socket.io');
 
-module.exports = server => {
-  const io = socket(server);
 
-  io.on('connection', function(socket) {
-    socket.userID = socket.request._query.uid;
-
-    /* socket.on('DIALOGS:JOIN', (dialogId) => {
-      socket.dialogId = dialogId;
-      socket.join(dialogId); // join ???
-    }); */
-    /* socket.on('DIALOGS:TYPING', (obj) => {
-      socket.broadcast.emit('DIALOGS:TYPING', obj);
-    }); */
-
-    /* socket.on('disconnect', () => {
-      io.emit('updateUsersList', getUsers()); todo оазобрать с разницей io.emit socket.emit
-    }); */
-  });
-
-  return io;
-};

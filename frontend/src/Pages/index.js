@@ -10,8 +10,13 @@ const BasePage = () => {
   return (
     <Switch>
       <Route path="/auth" render={AuthPage} />
-      <Route path={[ "/", "/chat" ]} render={isUserLogged ? ChatPage : AuthPage} />
-      <Redirect to="/" /> {/* Добавить еррор пэйдж */}
+      <Route path={["/", "/chat"]} render={({ location }) => (
+        isUserLogged
+          ? <ChatPage location={location} />
+          : <Redirect to="/auth" />
+      )} />
+      <Redirect to="/auth" />
+      {/* Добавить еррор пэйдж */}
     </Switch>
   )
 };

@@ -1,25 +1,26 @@
-import React, { 
+import React, {
   useState,
   useEffect,
   useContext,
-  memo 
+  memo
 } from 'react';
 import { UserIcon } from "icons";
 import { UserContext } from 'context/UserContext'
-import { 
-  StyledDrawer, 
-  List, 
+import {
+  StyledDrawer,
+  List,
   StyledButton,
   StyledDivider
 } from 'components/common';
-import { 
+import {
   userSource,
-  dialogSource 
+  dialogSource
 } from "sources";
 
 import {
   Container,
-  Header
+  Header,
+  SyledNavLink
 } from "./styled"
 // todo подумать над надписями
 // todo переименовать в sidebar
@@ -27,45 +28,61 @@ const SideBar = () => {
   const { uid } = useContext(UserContext);
 
   const [isOpen, setOpen] = useState(false);
-  const [users, setUsers]  = useState([]); // todo кроме меня
+  const [users, setUsers] = useState([]); // todo кроме меня
   const [dialogs, setDialogs] = useState([]);
 
   const getUsers = async () => {
     try {
       const res = await userSource.getAll(); // todo не получать пароль
-      console.log(111, res);
       setUsers(res.data);
     } catch (error) {
       console.log("userSource.getAll", error);
     }
   };
-  
+
   const getDialogs = async () => {
     try {
-      const res = await dialogSource.getAll({ uid }); // todo не получать пароль
+      console.log(111);
+      const res = await dialogSource.getAll({ params: { uid } });
+      console.log(222);
       setDialogs(res.data);
     } catch (error) {
+      console.log(333)
       console.log("dialogSource.getAll", error);
     }
   };
 
   useEffect(() => {
-    getDialogs();
     getUsers();
+    getDialogs();
   }, []);
 
   const openDrawer = () => setOpen(true);
   /* todo добавить containers в каждом модуле */
-  const handleSelect = user => {
+  const handleSelect = async user => {
+    const hasDialog = dialogs.some(({ partnerId }) => partnerId === user.uid);
+
+    if (hasDialog) return; // todo добавить предупреждение
+
     try {
-      dialogSource.create({
-        partnerId: user.uid, 
+      const res = await dialogSource.create({
+        partnerId: user.uid,
+        partnerName: user.name,
         lastUpdate: Date.now()
       });
+
+      setDialogs([res.data, ...dialogs]);
     } catch (error) {
       console.log("dialogSource.create", error);
     }
   };
+
+  const ListItemWrapper = ({ id, children }) => (
+    <SyledNavLink to={"/" + id}> {/* отрефачить */}
+      {children}
+    </SyledNavLink>
+  );
+
   // выделить хедер, чтобы дивидеры не слвались
   return (
     <Container>
@@ -85,7 +102,7 @@ const SideBar = () => {
         anchor="left"
         open={isOpen}
         setOpen={setOpen}
-      > 
+      >
         <List
           list={users}
           rules={{
@@ -102,21 +119,22 @@ const SideBar = () => {
           }}
         />
       </StyledDrawer>
-    
+
       <List
-          list={dialogs}
-          Icon={UserIcon}
-          rules={{
-            primary: "name",
-            secondary: "lastMessage"
-          }}
-          divider
-          /* button */
-          /* styles={{
-            color: "white",
-            svgFill: "gray"
-          }} */
-        />
+        list={dialogs}
+        Icon={UserIcon}
+        rules={{
+          primary: "partnerName",
+          secondary: "lastMessage"
+        }}
+        divider
+        ListItemWrapper={ListItemWrapper}
+      /* button */
+      /* styles={{
+        color: "white",
+        svgFill: "gray"
+      }} */
+      />
     </Container>
   );
 };

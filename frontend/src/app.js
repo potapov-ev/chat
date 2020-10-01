@@ -1,12 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import UserContextProvider from "context/UserContext";
-import AppContextProvider from "context/AppContext";
+import ContextsProvider from "context";
 import ThemeProvider from 'Core/ThemeProvider'
 import { BrowserRouter } from 'react-router-dom';
 
 import "core-js/stable";
-import "regenerator-runtime/runtime"; 
+import "regenerator-runtime/runtime";
 
 import BasePage from "./Pages";
 
@@ -17,15 +16,13 @@ class App extends React.Component {
       <>
         {/* <React.StrictMode> */}
 
-        <AppContextProvider>
+        <ContextsProvider>
           <ThemeProvider>
-            <UserContextProvider>
-              <BrowserRouter>
-                <BasePage />
-              </BrowserRouter>
-            </UserContextProvider>
+            <BrowserRouter>
+              <BasePage />
+            </BrowserRouter>
           </ThemeProvider>
-        </AppContextProvider>
+        </ContextsProvider>
 
         {/* </React.StrictMode> */}
       </>

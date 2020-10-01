@@ -17,40 +17,45 @@ function Container({
   button,
   divider,
   emptyListMessage = "",
+  ListItemWrapper = ({ children }) => <>{children}</>,
 }) { /* todo отдельно передавать стили для listitem и т п */
-  /* todo узнать как менять тему с задержкой */
+
   return (
     <StyledList>
       {
         !!list.length
           ?
           list.map((item, index) => (
-            <ListItem
-              button={button}
-              onClick={() => handleSelect && 
-                handleSelect(rules?.select ? item[rules.select] : item) 
-              }
-              divider={divider && (index !== list.length - 1)}
+            <ListItemWrapper
+              id={item.id} /* todo заменить на rules */
             >
-              {
-                Icon &&
-                <ListItemAvatar>
-                  <Avatar>
-                    <Icon
-                      width="16px"
-                      height="16px"
-                    />
-                  </Avatar>
-                </ListItemAvatar>
-              }
-              <StyledListItemText
-                primary={rules ? item[rules.primary] : item}
-                secondary={rules?.secondary && item[rules.secondary]}
-                classes={{
-                  primary: "primary"
-                }}
-              />
-            </ListItem>
+              <ListItem
+                button={button}
+                onClick={() => handleSelect &&
+                  handleSelect(rules?.select ? item[rules.select] : item)
+                }
+                divider={divider && (index !== list.length - 1)}
+              >
+                {
+                  Icon &&
+                  <ListItemAvatar>
+                    <Avatar>
+                      <Icon
+                        width="16px"
+                        height="16px"
+                      />
+                    </Avatar>
+                  </ListItemAvatar>
+                }
+                <StyledListItemText
+                  primary={rules ? item[rules.primary] : item}
+                  secondary={rules?.secondary && item[rules.secondary]}
+                  classes={{
+                    primary: "primary"
+                  }}
+                />
+              </ListItem>
+            </ListItemWrapper>
           ))
           :
           emptyListMessage

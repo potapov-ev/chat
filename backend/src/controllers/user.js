@@ -15,7 +15,6 @@ class UserController {
   }
 
   getAll = (req, res) => {
-    console.log("getAll", req.user)
     getUsers(req.user && req.user.uid)
       .then(result => {
         if (result.state === STATE.SUCCESS) {
