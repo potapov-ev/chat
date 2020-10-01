@@ -5,10 +5,12 @@ import React, {
   useCallback,
   useContext
 } from 'react';
-import socket from 'Core/socket-io';
-
+//import socket from 'Core/socket-io';
 import { UserContext } from 'context/UserContext'
+import { DialogContext } from 'context/DialogContext'
 import { Loader } from "components/common";
+import { getCurrentTime } from "utils";
+import { messageSource } from "sources";
 import {
   SideBar,
   Messages,
@@ -24,33 +26,32 @@ import {
 } from "./styled";
 
 const Chat = () => {
-  // todo Разобраться с socket
-  // todo обновить версии библиотек
   // todo подумать о лучшей архитектуре, распределение state, заюзать context
   // todo Мб заюзать lazy Suspense к GiffBox
   const { userName } = useContext(UserContext);
-  const [isChatReady, setIsChatReady] = useState(false);
+  const { currentDialogId } = useContext(DialogContext);
   const [messages, setMessages] = useState([]);
-  const [isGif, setIsGif] = useState(false);
-  const messagesEl = useRef(null); // ссылка на DOM-элемент messages
-  const messagesRef = useRef(null); // для обновления ссылки на массив messages, для работы сокета
+  const [isChatReady, setIsChatReady] = useState(false);
+  const [isGiff, setIsGiff] = useState(false);
+  // const messagesRef = useRef(null); // для обновления ссылки на массив messages, для работы сокета
   const pashalka = useRef(null);
   const video = useRef(null);
 
   console.log("Chat");
-  useEffect(() => {
+  /* useEffect(() => {
     messagesRef.current = messages;
-  });
+  }); */
 
   useEffect(() => {
     if (userName.length) {
       setIsChatReady(true);
 
-      if (socket?.disconnect) socket.disconnect();
+      //if (socket?.disconnect) socket.disconnect();
     }
   }, [userName]);
 
-  useEffect(() => {
+  //#region 
+  /* useEffect(() => {
     if (socket) {
       const helper = message => {
         setMessagesHelper(message, messagesRef.current);
@@ -63,51 +64,46 @@ const Chat = () => {
       };
     }
   }, [socket]);
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
+  //#endregion
 
   const setMessagesHelper = (message, messages) => {
     setMessages([...messages, message]);
-  };
+  }; */
+  //#endregion
 
-  const sendMessage = message => {
-    if (message.text?.toLowerCase() === "ярик") {
+  const sendMessage = async (message) => {
+    if (message.text?.toLowerCase() === "атас") {
       pashalka.current.style.display = "block";
       video.current.play();
       setTimeout(() => pashalka.current.style.display = "none", 4000);
     }
     // todo Убрать messages из зависимостей, сообщения принимать с сервера
     // иначе от useCallback нет толка
-    const MessageInfo = {
-      id: Date.now(),
-      userName: localStorage.getItem('userName'),
-      uid: localStorage.getItem('uid'),
-      date: new Date(),
-      message: message,
+    const newMessage = {
+      type: message.type,
+      text: message.text,
+      url: message.url,
+      dialogId: currentDialogId,
+      time: getCurrentTime(),
+      isReaded: false,
     };
 
-    setMessages(
-      messages.concat([{
-        ...MessageInfo
-      }])
-    );
-    console.log(32)
-    socket.emit('message', {
-      ...MessageInfo
-    });
-  };
 
-  const scrollToBottom = () => {
-    if (messagesEl?.current) {
-      messagesEl.current.scrollTop = messagesEl.current.scrollHeight - messagesEl.current.clientHeight;
+    try {
+      const res = await messageSource.create(newMessage);
+      console.log(321321, res.data)
+      setMessages([...messages, res.data]);
+    } catch (error) {
+      console.log("messageSource.create", error);
     }
+    /* socket.emit('message', {
+      ...MessageInfo
+    }); */
   };
 
   const toggleGif = useCallback(() => {
-    setIsGif(!isGif);
-  }, [isGif]);
+    setIsGiff(!isGiff);
+  }, [isGiff]);
 
   return (
     <Container>
@@ -119,11 +115,11 @@ const Chat = () => {
             <Dialog>
               <Messages
                 messages={messages}
-                isGif={isGif}
-                messagesEl={messagesEl}
+                setMessages={setMessages}
+                isGiff={isGiff}
               />
               {
-                isGif
+                isGiff
                   ?
                   <GiffBox
                     sendMessage={sendMessage}

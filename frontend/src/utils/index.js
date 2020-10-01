@@ -2,6 +2,9 @@ export const formatNumber = number => (
   number < 10 ? "0" + number : number
 );
 
+export const getCurrentTime = () => 
+  `${formatNumber(new Date().getHours())}:${formatNumber(new Date().getMinutes())}`;
+  
 const nativeMax = Math.max;
 const nativeMin = Math.min;
 export function debounce(func, wait, options) {

@@ -1,5 +1,10 @@
-import React from 'react';
-
+import React, {
+  useEffect,
+  useRef,
+  useContext
+} from 'react';
+import { DialogContext } from 'context/DialogContext'
+import { messageSource } from "sources";
 import Message from "../Message";
 
 import {
@@ -8,32 +13,63 @@ import {
   NoMessages
 } from "./styled";
 
-const Messages = ({ messages, isGif, messagesEl }) => (
-  <>
-    <Container
-      formHeight={isGif ? 240 : 40}
-      ref={messagesEl}
-    >
-      {
-        console.log("Messages")
-      }
-      {
-        messages.length
-          ?
-          messages.map(message => {
-            return (
-              <Message
-                key={message.id}
-                message={message}
-              />
-            )
-          })
-          :
-          <NoMessages>No messages in chat room</NoMessages>
-      }
-    </Container>
-    <PaddingBlock />
-  </>
-);
+const Messages = ({ messages, setMessages, isGiff }) => {
+  const { currentDialogId } = useContext(DialogContext);
+  const messagesEl = useRef(null);
+
+  const getMessages = async dialogId => {
+    try {
+      const res = await messageSource.getAll({ params: { dialogId: dialogId } });
+      setMessages(res.data); 
+    } catch (error) {
+      console.log("messageSource.getAll", error);
+    }
+  };
+
+  useEffect(() => {
+    if (currentDialogId !== -1) {
+      getMessages(currentDialogId);
+    }
+  }, [currentDialogId]);
+
+  const scrollToBottom = () => {
+    if (messagesEl?.current) {
+      messagesEl.current.scrollTop = messagesEl.current.scrollHeight - messagesEl.current.clientHeight;
+    }
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  
+  return (
+    <>
+      <Container
+        formHeight={isGiff ? 240 : 40}
+        ref={messagesEl}
+      >
+        {
+          console.log("Messages", messages)
+        }
+        {
+          messages.length
+            ?
+            messages.map(message => {
+              return (
+                <Message
+                  key={message.id}
+                  message={message}
+                />
+              )
+            })
+            :
+            <NoMessages>No messages in chat room</NoMessages>
+        }
+      </Container>
+      <PaddingBlock />
+    </>
+  );
+};
 
 export default Messages;

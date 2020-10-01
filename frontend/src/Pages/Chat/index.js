@@ -12,7 +12,7 @@ const ChatPage = ({ location }) => {
     const dialogId = location?.pathname.split("/").pop();
 
     if (dialogId && Number(dialogId) == dialogId) {
-      setCurrentDialogId(dialogId);
+      setCurrentDialogId(Number(dialogId));
     }
 
   }, [location?.pathname])

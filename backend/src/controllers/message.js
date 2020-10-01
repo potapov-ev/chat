@@ -1,10 +1,10 @@
 const { STATE } = require("../core/constants");
 const {
-  addMessage,
+  addMessage, // todo create
   updateStatus,
   getMessages,
   deleteMessage
-} = require("../mysql/dialogs");
+} = require("../mysql/messages");
 
 class MessageController {
   constructor(io) {
@@ -12,12 +12,12 @@ class MessageController {
   }
 
   create = (req, res) => {
-    addMessage(req.body.message)
+    addMessage({ ...req.body.data, authorId: req.user.uid })
       .then(result => {
         if (result.state === STATE.SUCCESS) {
-          res.status(200);
+          res.status(200).json(result.data);
         } else {
-          console.log("Create message", result.error);
+          console.log(321,"Create message", result.error);
           res.status(400).json(result.error);
         }
       })
@@ -33,18 +33,18 @@ class MessageController {
         if (result.state === STATE.SUCCESS) {
           res.status(200);
         } else {
-          console.log("Create message", result.error);
+          console.log("updateStatus", result.error);
           res.status(400).json(result.error);
         }
       })
       .catch(error => {
-        console.log("Create message", error);
+        console.log("updateStatus", error);
         res.status(400).json(error);
       });
   };
 
   getAll = (req, res) => {
-    getMessages()
+    getMessages(req.query.dialogId)
       .then(result => {
         if (result.state === STATE.SUCCESS) {
           res.status(200).json(result.data);

@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
 const StyledList = styled(List)`
@@ -10,7 +11,7 @@ const StyledList = styled(List)`
   }
 `;
 
-const StyledListItemText = styled(ListItemText)`  
+const StyledListItem = styled(ListItem)`  
   .primary {
     white-space: nowrap;
     overflow-x: hidden;
@@ -18,7 +19,17 @@ const StyledListItemText = styled(ListItemText)`
   }
 `;
 
+
+const StyledListItemText = styled(ListItemText)`  
+  .root {
+    :hover {
+      color: red !important;
+    }
+  }
+`;
+
 export {
   StyledList,
+  StyledListItem,
   StyledListItemText
 };

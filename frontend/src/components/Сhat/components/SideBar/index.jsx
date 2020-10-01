@@ -4,8 +4,8 @@ import React, {
   useContext,
   memo
 } from 'react';
-import { UserIcon } from "icons";
 import { UserContext } from 'context/UserContext'
+import { UserIcon } from "icons";
 import {
   StyledDrawer,
   List,
@@ -16,11 +16,11 @@ import {
   userSource,
   dialogSource
 } from "sources";
+import DialogList from "./DialogList";
 
 import {
   Container,
   Header,
-  SyledNavLink
 } from "./styled"
 // todo подумать над надписями
 // todo переименовать в sidebar
@@ -42,12 +42,9 @@ const SideBar = () => {
 
   const getDialogs = async () => {
     try {
-      console.log(111);
       const res = await dialogSource.getAll({ params: { uid } });
-      console.log(222);
       setDialogs(res.data);
     } catch (error) {
-      console.log(333)
       console.log("dialogSource.getAll", error);
     }
   };
@@ -76,12 +73,6 @@ const SideBar = () => {
       console.log("dialogSource.create", error);
     }
   };
-
-  const ListItemWrapper = ({ id, children }) => (
-    <SyledNavLink to={"/" + id}> {/* отрефачить */}
-      {children}
-    </SyledNavLink>
-  );
 
   // выделить хедер, чтобы дивидеры не слвались
   return (
@@ -120,20 +111,9 @@ const SideBar = () => {
         />
       </StyledDrawer>
 
-      <List
-        list={dialogs}
-        Icon={UserIcon}
-        rules={{
-          primary: "partnerName",
-          secondary: "lastMessage"
-        }}
-        divider
-        ListItemWrapper={ListItemWrapper}
-      /* button */
-      /* styles={{
-        color: "white",
-        svgFill: "gray"
-      }} */
+      <DialogList 
+        dialogs={dialogs}
+        UserIcon={UserIcon}
       />
     </Container>
   );

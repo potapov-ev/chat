@@ -26,13 +26,14 @@ const createMessagesTable = () => {
 
 const addMessage = async message => {
   const connection = createConnection();
-  const sql = "INSERT INTO messages(text, authorId, dialogId, time, isReaded) VALUES(?, ?, ?, ?, ?)";
-  const data = [message.text, message.authorId, message.dialogId, message.time, message.isReaded];// todo написать везде data
-  let result = STATE.ERROR;
+  const sql = "INSERT INTO messages(type, text, url, authorId, dialogId, time, isReaded) VALUES(?, ?, ?, ?, ?, ?, ?)";
+  const data = [message.type, message.text, message.url, message.authorId, message.dialogId, message.time, message.isReaded];// todo написать везде data
+  const result = { ..._result };
 
   await connection.promise().query(sql, data)
-    .then(() => {
+    .then(results => {
       result.state = STATE.SUCCESS;
+      result.data = { ...message, id: results[0].insertId}
       console.log("Message added");
     })
     .catch(error => {
@@ -68,21 +69,23 @@ const updateStatus = async ({ id, isReaded }) => {
 
 const getMessages = async dialogId => {
   const connection = createConnection();
-  const sql = "SELECT * FROM messages WHERE dialogId=?";
+  const sql = "SELECT * FROM messages WHERE dialogId=? ORDER BY id";
   const result = { ..._result };
 
-  await connection.promise().query(sql, [dialogId]).then(results => {
-    result.state = STATE.SUCCESS;
-    result.data = [...results[0]];
-    console.log("Messages received");
-  }).catch(error => {
-    result.state = STATE.ERROR;
-    result.error = error;
-    console.log("Error receiving messages", error);
-  });
+  await connection.promise().query(sql, [dialogId])
+    .then(results => {
+      result.state = STATE.SUCCESS;
+      result.data = [...results[0]];
+      console.log("Messages received");
+    })
+    .catch(error => {
+      result.state = STATE.ERROR;
+      result.error = error;
+      console.log("Error receiving messages", error);
+    });
   connection.end();
   /* todo во всех ошибках добавить префикс DB console.error*/
-  
+
   return result;
 };
 

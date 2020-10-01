@@ -1,10 +1,10 @@
 import React from 'react'
-import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 
 import {
   StyledList,
+  StyledListItem,
   StyledListItemText
 } from "./styled";
 
@@ -15,6 +15,7 @@ function Container({
   handleSelect,
   Icon,
   button,
+  selectedId,
   divider,
   emptyListMessage = "",
   ListItemWrapper = ({ children }) => <>{children}</>,
@@ -27,10 +28,15 @@ function Container({
           ?
           list.map((item, index) => (
             <ListItemWrapper
+              key={index}
               id={item.id} /* todo заменить на rules */
             >
-              <ListItem
+              <StyledListItem
+                classes={{
+                  root: "root"
+                }}
                 button={button}
+                selected={rules?.select && item[rules.select] === selectedId}
                 onClick={() => handleSelect &&
                   handleSelect(rules?.select ? item[rules.select] : item)
                 }
@@ -54,7 +60,7 @@ function Container({
                     primary: "primary"
                   }}
                 />
-              </ListItem>
+              </StyledListItem>
             </ListItemWrapper>
           ))
           :
@@ -64,4 +70,4 @@ function Container({
   )
 }
 
-export default Container
+export default Container; // мемоизировать сам бог велел

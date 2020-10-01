@@ -16,7 +16,9 @@ module.exports = {
     `,
   MESSAGES_TABLE_COLUMNS_TYPES: `
       id INT AUTO_INCREMENT PRIMARY KEY,
-      text TEXT NOT NULL, 
+      type CHAR(4) NOT NULL,
+      text TEXT, 
+      url VARCHAR(200),
       authorId INT NOT NULL,
       dialogId INT NOT NULL,
       time CHAR(5) NOT NULL,

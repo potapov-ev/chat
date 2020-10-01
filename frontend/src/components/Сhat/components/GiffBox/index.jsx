@@ -61,7 +61,7 @@ const GifBox = ({ toggleGif, sendMessage }) => {
 
   const sendGIF = gif => () => {
     sendMessage({
-      type: 'gif',
+      type: "gif",
       url: gif.original
     });
   };

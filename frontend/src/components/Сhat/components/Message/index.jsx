@@ -1,5 +1,4 @@
 import React, { memo } from 'react';
-import { formatNumber } from "utils";
 
 import {
   Container,
@@ -11,28 +10,28 @@ import {
 
 const Message = ({ message }) => (
   <Container
-    isMy={localStorage.getItem('uid') === message.uid}
+    isMy={Number(localStorage.getItem('uid')) === message.authorId}
   >
     {
-      console.log("Message", message)
+      console.log("Message")
     }
     <UserName>
-      {message.userName}
+      {localStorage.getItem('userName')} {/* todo заменить все localStorage по возиожности  */}
     </UserName>
     <Time>
-      {`${formatNumber(new Date(message.date).getHours())}:${formatNumber(new Date(message.date).getMinutes())}`}
+      {message.time}
     </Time>
 
     {
-      message.message.type === 'message'
+      message.type === 'TEXT'
         ?
         <Text>
-          {message.message.text}
+          {message.text}
         </Text>
         :
         <ImgContainer>
           <img
-            src={message.message.url}
+            src={message.url}
             alt="Gif"
           />
         </ImgContainer>

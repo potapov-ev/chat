@@ -5,20 +5,22 @@ import { StyledButton, StyledTextField } from 'components/common'
 import {
   Container,
 } from "./styled";
-/* todo User переписать на List material ui заюзать sencondary text (uid и тп) */
+
 const TextForm = ({ toggleGif, sendMessage }) => {
+  console.log("TextForm")
+
   const handleKeyUp = e => {
     const message = e.target.value;
     if (e.key === 'Enter' && message) {
       sendMessage({
-        type: 'message',
+        type: "TEXT",
         text: message
       });
 
       e.target.value = "";
     }
   };
-  console.log("TextForm")
+  
   return (
     <Container>
       <StyledButton
@@ -40,7 +42,7 @@ const TextForm = ({ toggleGif, sendMessage }) => {
     </Container>
   );
 };
-/* todo StyledTextField перекрывает StyledButton */
+
 const MemoizedTextForm = memo(TextForm);
 
 export default MemoizedTextForm;
