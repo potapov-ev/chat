@@ -41,7 +41,7 @@ const SideBar = () => {
 
   const getDialogs = async () => {
     try {
-      const res = await dialogSource.getAll({ params: { uid } });
+      const res = await dialogSource.getAll({ uid });
       setDialogs(res.data);
     } catch (error) {
       console.log("dialogSource.getAll", error);
@@ -59,11 +59,10 @@ const SideBar = () => {
     const hasDialog = dialogs.some(({ partnerId }) => partnerId === user.uid);
 
     if (hasDialog) return; // todo добавить предупреждение
-
+    
     try {
       const res = await dialogSource.create({
         partnerId: user.uid,
-        partnerName: user.name,
         lastUpdate: Date.now()
       });
 

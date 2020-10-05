@@ -5,7 +5,7 @@ import React, {
   useCallback,
   useContext
 } from 'react';
-//import socket from 'Core/socket-io';
+import socket from 'Core/socket-io';
 import { UserContext } from 'context/UserContext'
 import { DialogContext } from 'context/DialogContext'
 import { Loader } from "components/common";
@@ -40,6 +40,20 @@ const Chat = () => {
   /* useEffect(() => {
     messagesRef.current = messages;
   }); */
+
+  useEffect(() => {
+    if (socket) {
+      const addMessage = message => {
+        console.log(111, messages, message);
+        setMessages([...messages, message])
+      };
+      console.log("SERVER:NEW_MESSAGE");
+      socket.on("SERVER:NEW_MESSAGE", addMessage);
+
+      return () =>
+        socket.removeListener("SERVER:NEW_MESSAGE", addMessage);
+    }
+  }, [messages, socket])
 
   useEffect(() => {
     if (userName.length) {
@@ -117,18 +131,19 @@ const Chat = () => {
                 dialogId={currentDialogId}
               />
               {
-                isGiff
-                  ?
-                  <GiffBox
-                    sendMessage={sendMessage}
-                    toggleGif={toggleGif}
-                  />
-                  :
-                  <TextForm
-                    sendMessage={sendMessage}
-                    toggleGif={toggleGif}
-                  />
-
+                currentDialogId !== -1 && ( // todo переписать
+                  isGiff
+                    ?
+                    <GiffBox
+                      sendMessage={sendMessage}
+                      toggleGif={toggleGif}
+                    />
+                    :
+                    <TextForm
+                      sendMessage={sendMessage}
+                      toggleGif={toggleGif}
+                    />
+                )
               }
             </Dialog>
           </>

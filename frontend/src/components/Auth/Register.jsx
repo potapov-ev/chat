@@ -32,8 +32,8 @@ const Register = ({ setIsLogin, toChat }) => {
       const res = await userSource.signUp(user);
       toChat({ name: res.data.name, uid: res.data.uid });
     } catch (error) {
-      console.log("regis", error.response || error);
-      setError(error.response?.data.message || error.toString());
+      console.log("regis", error);
+      setError(error.data.message || error.toString());
     }
   };
 

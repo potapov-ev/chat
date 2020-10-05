@@ -16,7 +16,7 @@ const Messages = ({ messages, setMessages, isGiff, dialogId }) => {
 
   const getMessages = async dialogId => {
     try {
-      const res = await messageSource.getAll({ params: { dialogId: dialogId } });
+      const res = await messageSource.getAll({ dialogId });
       setMessages(res.data); 
     } catch (error) {
       console.log("messageSource.getAll", error);

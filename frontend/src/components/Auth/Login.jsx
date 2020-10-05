@@ -27,8 +27,8 @@ const Login = ({ setIsLogin, toChat }) => {
       const res = await userSource.signIn(values);
       toChat({ name: res.data.name, uid: res.data.uid });
     } catch (error) {
-      console.log("login", error.response || error);
-      setError(error.response?.data.message || error.toString());
+      console.log("userSource.signIn", error);
+      setError(error.data.message || error.toString());
     }
   };
 

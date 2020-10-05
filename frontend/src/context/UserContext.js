@@ -11,12 +11,16 @@ const UserContextProvider = ({ children }) => {
   useEffect(() => {
     if (userName) {
       localStorage.setItem('userName', userName);
+    } else {
+      localStorage.removeItem('userName');
     }
   }, [userName]);
 
   useEffect(() => {
     if (uid) {
       localStorage.setItem('uid', uid);
+    } else {
+      localStorage.removeItem('uid');
     }
   }, [uid]);
 

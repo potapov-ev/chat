@@ -6,6 +6,8 @@ const {
   deleteMessage
 } = require("../mysql/messages");
 const { getUser } = require("../mysql/users");
+const { getDialog } = require("../mysql/dialogs");
+const { getSocketIdByUID } = require("../core/socket-io");
 
 class MessageController {
   constructor(io) {
@@ -17,12 +19,32 @@ class MessageController {
       .then(result => {
         if (result.state === STATE.SUCCESS) {
           const message = result.data;
-          // Добавим поле partnerName для отображения имени пользователя в списках диалогов
+          // Добавим поле partnerName для корректного отображения
           getUser({ _uid: message.authorId })
             .then(result => {
               if (result.state === STATE.SUCCESS) {
                 const data = { ...message, authorName: result.data.name };
                 res.status(200).json(data);
+
+                getDialog(message.dialogId)
+                  .then(result => {
+                    if (result.state === STATE.SUCCESS) {
+                      const dialog = result.data;
+                      const uid = message.authorId === dialog.authorId
+                        ? dialog.partnerId
+                        : dialog.authorId;
+
+                      const socketId = getSocketIdByUID(uid);
+                      this.io.to(socketId).emit("SERVER:NEW_MESSAGE", data);
+                    } else {
+                      console.log("message.create -> getUser -> getDialog", result.error); // todo вот так
+                      res.status(400).json(result.error);
+                    }
+                  })
+                  .catch(error => {
+                    console.log("message.create -> getUser -> getDialog", error); // todo вот так
+                    res.status(400).json(error);
+                  })
               } else {
                 console.log("message.create -> getUser.then", result.error); // todo везде навести такую красоту dialog.create -> getUser.then
                 res.status(400).json(result.error);
@@ -33,7 +55,7 @@ class MessageController {
               res.status(400).json(error);
             })
         } else {
-          console.log(321,"Create message", result.error);
+          console.log(321, "Create message", result.error);
           res.status(400).json(result.error);
         }
       })
@@ -63,6 +85,7 @@ class MessageController {
     getMessages(req.query.dialogId)
       .then(result => {
         if (result.state === STATE.SUCCESS) {
+          // Добавим поле partnerName для корректного отображения
           const promises = result.data.map(message => (
             getUser({ _uid: message.authorId })
               .then(result => {

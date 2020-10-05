@@ -69,16 +69,13 @@ const GifBox = ({ toggleGif, sendMessage }) => {
     setPlaceholder("");
     const q = value || search;
     // todo поискать подобные крутые темы (стикеры и т.п.)
-
     try {
       const res = await giffSource.get({
-        params: {
-          q,
-          offset: offset,
-        }
+        q,
+        offset: offset,
       });
 
-      const results = response.data.data || response.data;
+      const results = res.data.data || res.data;
 
       if (results.length) {
         const gifs = results.map(gif => ({
@@ -93,7 +90,7 @@ const GifBox = ({ toggleGif, sendMessage }) => {
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      console.log(giffSource.get, error);
+      console.log("giffSource.get", error); // todo async service Для этого
     }
   }
 

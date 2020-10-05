@@ -1,6 +1,6 @@
 module.exports = {
   createRoutes: require("./routes"),
   useMiddlewares: require("./useMiddlewares"),
-  /* socketIO: require("./socket-io"), */
+  createSocket: require("./socket-io").createSocket, 
   constants: require("./constants")
 };

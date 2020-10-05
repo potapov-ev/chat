@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { withRouter } from 'react-router-dom';
 import { UserContext } from 'context/UserContext'
+import socket from 'Core/socket-io';
 
 import Register from "./Register.jsx";
 import Login from "./Login.jsx";
@@ -13,13 +14,13 @@ const Auth = ({ history }) => {
   console.log("Auth");
 
   const { setUserName, setUID } = useContext(UserContext);
-  localStorage.removeItem("uid");
-
   const [isLogin, setIsLogin] = useState(true);
 
   const toChat = (user = {}) => {
     setUID(user.uid)
     setUserName(user.name);
+
+    socket.emit("CLIENT:LOG_IN", user.uid);
 
     history.push("/chat");
   };

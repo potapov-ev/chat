@@ -1,10 +1,9 @@
-import { DEV_STAND } from "./stands";
-import { axios } from "services";
+import { axiosService } from "services";
 
 const userSource = {
-  getAll: async () => axios.get(`${DEV_STAND}/user/all`,{withCredentials: true}),
-  signUp: async data => axios.post(`${DEV_STAND}/user/regis`, data), // todo signUp
-  signIn: async data => axios.post(`${DEV_STAND}/user/login`, data, {withCredentials: true}),
+  getAll: async () => axiosService.get("/user/all"),
+  signUp: async payload => axiosService.post("/user/regis", payload), // todo signUp
+  signIn: payload => axiosService.post("/user/login", payload),
 };
 
 export default userSource;

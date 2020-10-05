@@ -1,7 +1,8 @@
 import io from 'socket.io-client';
+const BASE_URL = "http://localhost:8989";
 
-const socket = io('http://localhost:8989', {
-  query: "uid=" + localStorage.getItem("uid")
-});
+const socket = io(BASE_URL);
 
-export default socket;
+socket.emit("CLIENT:LOG_IN", localStorage.getItem("uid"));
+
+export default socket; 

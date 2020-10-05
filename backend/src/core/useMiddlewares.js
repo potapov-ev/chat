@@ -1,6 +1,7 @@
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const passport = require("../middlewares/passport");
+const checkAuthentication = require("../middlewares/checkAuthentication");
 
 const useMiddlewares = app => {
   // Настройки для запросов с других доменов
@@ -34,6 +35,8 @@ const useMiddlewares = app => {
   // Passport middleware
   app.use(passport.initialize());
   app.use(passport.session());
+ 
+  //app.use(checkAuthentication);
 
   // Мидлвара чтобы сервер мог отдавать статику
   // http://localhost/assets/card.(png/css/...)

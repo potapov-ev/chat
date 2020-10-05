@@ -35,12 +35,11 @@ const createDialogsTable = () => {
 
 const createDialog = async data => {
   const connection = createConnection();
-  const sql = `INSERT INTO dialogs(authorId, partnerId, partnerName, lastUpdate, lastMessage)
-    VALUES(?, ?, ?, ?, ?)`;
+  const sql = `INSERT INTO dialogs(authorId, partnerId, lastUpdate, lastMessage)
+    VALUES(?, ?, ?, ?)`;
   const dialogData = [
     data.authorId, 
     data.partnerId, 
-    data.partnerName, 
     data.lastUpdate,
     data.lastMessage
   ];
@@ -85,6 +84,27 @@ const getDialogs = async userId => {
   return result;
 };
 
+const getDialog = async id => {
+  const connection = createConnection();
+  const sql = "SELECT * FROM dialogs WHERE id=?";
+  let result = { ..._result };
+
+  await connection.promise().query(sql, [id])
+    .then(results => {
+      result.state = STATE.SUCCESS;
+      result.data = results[0][0];
+      console.log("Dialog received")
+    })
+    .catch(error => {
+      result.state = STATE.ERROR;
+      result.error = error;
+      console.log("Error deleting dialogs", error)
+    });
+  connection.end();
+
+  return result;
+};
+
 const deleteDialog = async id => {
   const connection = createConnection();
   const sql = "DELETE FROM dialogs WHERE id=?";
@@ -92,7 +112,7 @@ const deleteDialog = async id => {
 
   await connection.promise().query(sql, [id])
     .then(() => {
-      result.STATE.SUCCESS;
+      result.state = STATE.SUCCESS;
       console.log("Dialogs deleted")
     })
     .catch(error => {
@@ -110,4 +130,5 @@ module.exports = {
   getDialogs,
   deleteDialog,
   createDialogsTable, // todo убрать
+  getDialog
 };

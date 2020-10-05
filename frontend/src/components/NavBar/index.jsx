@@ -1,5 +1,7 @@
 import React, { useState, useRef, useContext } from 'react';
-import { AppContext } from "context/AppContext"
+import { AppContext } from "context/AppContext";
+import { UserContext } from 'context/UserContext';
+import { DialogContext } from 'context/DialogContext';
 import { StyledPopover, StyledButton, LinkButton } from "components/common";
 import { THEME_CONSTANTS } from "constants/common";
 import { PalleteIcon } from "icons";
@@ -14,6 +16,9 @@ import {
 // todo Переименовать на ХЕдер
 const Navbar = () => {
   const { setLightTheme, setPurpleTheme, setDarkTheme } = useContext(AppContext);
+  const { setUserName, setUID } = useContext(UserContext);
+  const { setCurrentDialogId } = useContext(DialogContext);
+
   const [open, setOpen] = useState(false); // название
   const anchorEl = useRef(null);
 
@@ -31,6 +36,12 @@ const Navbar = () => {
       default:
         return;
     }
+  };
+
+  const logOut = () => {
+    setUID(null)
+    setUserName(null);
+    setCurrentDialogId(null);
   };
 
   return (
@@ -60,7 +71,7 @@ const Navbar = () => {
           handleSelect={handleSelect}
           list={THEME_CONSTANTS}
         />
-        
+
         <LinkButton
           href="https://github.com/mutik0137/chat"
         >
@@ -68,6 +79,7 @@ const Navbar = () => {
         </LinkButton>
         <LinkButton
           path="/auth"
+          callback={logOut}
         >
           Выйти
         </LinkButton>

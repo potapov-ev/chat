@@ -1,11 +1,10 @@
-import { DEV_STAND } from "./stands";
-import { axios } from "services";
+import { axiosService } from "services";
 
 const messageSource = {
-  getAll: async config => axios.get(`${DEV_STAND}/message/all`, config),
-  create: async data => axios.post(`${DEV_STAND}/message/create`, { data }),
-  updateStatus: async data => axios.put(`${DEV_STAND}/message/updatestatus`, { data }),
-  delete: async config => axios.delete(`${DEV_STAND}/message/delete`, config) 
+  getAll: payload => axiosService.get("/message/all", payload),
+  create: payload => axiosService.post("/message/create", { data: payload }),
+  updateStatus: payload => axiosService.put("/message/updatestatus", payload),
+  delete: payload => axiosService.delete("/message/delete", payload) 
 };
 
 export default messageSource;

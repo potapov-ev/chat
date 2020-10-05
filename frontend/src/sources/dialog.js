@@ -1,10 +1,9 @@
-import { DEV_STAND } from "./stands";
-import { axios } from "services";
+import { axiosService } from "services";
 
 const dialogSource = {
-  getAll: async config => axios.get(`${DEV_STAND}/dialog/all`, config),
-  create: async data => axios.post(`${DEV_STAND}/dialog/create`, { data }),
-  delete: async config => axios.delete(`${DEV_STAND}/dialog/delete`, config) // todo config: { data: {} }
+  getAll: payload => axiosService.get("/dialog/all", payload),
+  create: payload => axiosService.post("/dialog/create", { data: payload}),
+  delete: payload => axiosService.delete("/dialog/delete", payload)
 };
 
 export default dialogSource;

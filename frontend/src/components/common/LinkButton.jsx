@@ -3,8 +3,15 @@ import { withRouter } from 'react-router-dom';
 
 import StyledButton from "./StyledButton";
 
-const LinkButton = ({ children, path, href, history }) => {
+const LinkButton = ({
+  children,
+  path,
+  href,
+  history,
+  callback
+}) => {
   const handleClick = () => {
+    callback();
     if (href) {
       window.location.href = href;
     } else {
